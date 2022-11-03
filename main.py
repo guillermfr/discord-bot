@@ -42,6 +42,8 @@ async def delete(ctx, number: int):
     for each_message in messages:
         await each_message.delete()
 
+    await ctx.channel.send(f"{number} message(s) ont été supprimés", delete_after=2)
+
 # @bot.command(name="purge")
 # async def purge(ctx):
 #     await ctx.channel.purge()
@@ -76,5 +78,31 @@ async def serverInfo(ctx):
     messageInfo = f"Le serveur **{serverName}** contient {numberOfMembers} membres dont {numberofConnectedMembers} connectés.\nIl appartient à {serverOwner}\nLa description du serveur est : {descriptionServer}\nCe serveur possède {numberOfTextChannels} salons textuels et {numberOfVocalChannels} salons vocaux."
 
     await ctx.channel.send(messageInfo)
+
+@bot.command(name="say")
+async def say(ctx, *phrase):
+    await ctx.channel.send(" ".join(phrase))
+
+@bot.command(name="says")
+async def says(ctx, number : int, *phrase):
+    for i in range(number):
+        await ctx.channel.send(" ".join(phrase))
+
+@bot.command(name="getinfo")
+async def getinfo(ctx, infoDemandee):
+    reponse = True
+
+    if infoDemandee == "memberCount":
+        await ctx.channel.send(f"Ce serveur contient {ctx.guild.member_count} membres.") 
+    elif infoDemandee == "numberOfChannel":
+        await ctx.channel.send(f"Ce serveur contient {len(ctx.guild.text_channels) + len(ctx.guild.voice_channels)} salons (textuels ou vocaux).") 
+    elif infoDemandee == "name":
+        await ctx.channel.send(f"Ce serveur s'appelle **{ctx.guild.name}**.") 
+    else:
+        reponse = False
+    
+    if not(reponse):
+        await ctx.channel.send("Le paramètre entré n'est pas bon.\nLes paramètres disponibles sont : memberCount, numberOfChannel et name.")       
+
 
 bot.run(os.getenv("TOKEN"))
