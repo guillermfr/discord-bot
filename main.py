@@ -42,12 +42,39 @@ async def delete(ctx, number: int):
     for each_message in messages:
         await each_message.delete()
 
-@bot.command(name="purge")
-async def purge(ctx):
-    await ctx.channel.purge()
+# @bot.command(name="purge")
+# async def purge(ctx):
+#     await ctx.channel.purge()
 
 @bot.command(name="moi")
 async def moi(ctx):
     await ctx.channel.send(f"{ctx.me.mention} c'est moi wesh")
+
+@bot.command(name="salut")
+async def salut(ctx):
+    await ctx.channel.send("Wesh poto")
+
+@bot.command(name="serverinfo")
+async def serverInfo(ctx):
+    server = ctx.guild
+    serverName = server.name
+    serverOwner = server.owner
+    numberOfTextChannels = len(server.text_channels)
+    numberOfVocalChannels = len(server.voice_channels)
+    descriptionServer = server.description
+    numberOfMembers = server.member_count
+
+    # revoir ici, fonctionne mal
+    numberofConnectedMembers = 0
+    for member in server.members:
+        if member.status is not discord.Status.offline:
+            numberofConnectedMembers+=1
+    
+    # pas utilisé, ne rend pas très bien
+    image = server.icon
+
+    messageInfo = f"Le serveur **{serverName}** contient {numberOfMembers} membres dont {numberofConnectedMembers} connectés.\nIl appartient à {serverOwner}\nLa description du serveur est : {descriptionServer}\nCe serveur possède {numberOfTextChannels} salons textuels et {numberOfVocalChannels} salons vocaux."
+
+    await ctx.channel.send(messageInfo)
 
 bot.run(os.getenv("TOKEN"))
