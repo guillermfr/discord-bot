@@ -102,7 +102,33 @@ async def getinfo(ctx, infoDemandee):
         reponse = False
     
     if not(reponse):
-        await ctx.channel.send("Le paramètre entré n'est pas bon.\nLes paramètres disponibles sont : memberCount, numberOfChannel et name.")       
+        await ctx.channel.send("Le paramètre entré n'est pas bon.\nLes paramètres disponibles sont : memberCount, numberOfChannel et name.")
 
+@bot.command(name="kick")
+async def kick(ctx, user : discord.User, *reason):
+    reason = " ".join(reason)
+    await ctx.guild.kick(user, reason = reason)
+    await ctx.send(f"{user} a été kick pour la raison suivante : {reason}.")
+
+@bot.command(name="ban")
+async def ban(ctx, user : discord.User, *reason):
+    reason = " ".join(reason)
+    await ctx.guild.ban(user, reason = reason)
+    await ctx.send(f"{user} a été ban pour la raison suivante : {reason}.")
+
+@bot.command(name="unban")
+async def unban(ctx, user, *reason):
+    reason = " ".join(reason)
+    userName, userId = user.split("#")
+    bannedUsers = ctx.guild.bans()
+    async for i in bannedUsers:
+        if i.user.name == userName and i.user.discriminator == userId:
+            await ctx.guild.unban(i.user, reason = reason)
+            await ctx.send(f"{user} a été unban pour la raison suivante : {reason}.")
+            return
+    await ctx.send(f"L'utilisateur {user} n'est pas dans la liste des bans.")
+
+# @bot.command(name="bansId")
+# async def bansId(ctx):
 
 bot.run(os.getenv("TOKEN"))
