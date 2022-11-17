@@ -31,7 +31,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_command_error(ctx, error):
-    await ctx.channel.send(f"Cette commande n'existe pas, va te faire enculer :] (Erreur : {error})")
+    await ctx.channel.send(f"Cette commande n'existe pas (Erreur : {error})")
 
 @bot.command(pass_context=True, name="del")
 async def delete(ctx, number: int):
@@ -50,11 +50,11 @@ async def delete(ctx, number: int):
 
 @bot.command(name="moi")
 async def moi(ctx):
-    await ctx.channel.send(f"{ctx.me.mention} c'est moi wesh")
+    await ctx.channel.send(f"{ctx.me.mention} c'est moi !")
 
 @bot.command(name="salut")
 async def salut(ctx):
-    await ctx.channel.send("Wesh poto")
+    await ctx.channel.send("Salut !")
 
 @bot.command(name="serverinfo")
 async def serverInfo(ctx):
